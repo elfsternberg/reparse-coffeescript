@@ -1,0 +1,13 @@
+{
+    "name": "reparse-coffee",
+    "description": "An implementation of a parser combinator in coffeescript.",
+    "author": "Elf M. Sternberg (elf.sternberg@gmail.com)",
+    "version": "0.0.1",
+    "dependencies": {
+        "coffee-script": "1.x.x"
+    },
+    "devDependencies": {
+        "docco": "0.3.x"
+    },
+    "engine": "node >= 0.6.0"
+}
