@@ -226,7 +226,7 @@ exports.ReParse = class ReParse
 
     endBy: (method, end, min = 0) =>
         val = @many method, min
-        @option end
+        @produce end
         val
 
     # Parses 1 or more productions of method, which must be terminated
