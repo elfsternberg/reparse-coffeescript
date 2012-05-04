@@ -9,5 +9,8 @@
     "devDependencies": {
         "docco": "0.3.x"
     },
+    "scripts": {
+        "pre-install": "mkdir -p lib && ./node_modules/.bin/coffee -o lib src/reparse.js"
+    },
     "engine": "node >= 0.6.0"
 }

@@ -103,7 +103,13 @@ exports.ReParse = class ReParse
     # Match a regular expression against the input, returning the
     # first captured group.  If no group is captured, return the
     # matched string.  This can result in surprises, if you don't wrap
-    # your groups exactly right, which is common in ()? regexps.
+    # your groups exactly right, which is common in ()? regexps.  Note
+    # that this is where the input consumption happens: upon a match,
+    # the input is reduced to whatever did not match.  (Note that as
+    # the tree of productions is followed, backups of existing input
+    # are kept and restored when a possible parse fails.  If your
+    # source is very large, this can become problematic in both time
+    # and space.)
 
     match: (pattern) =>
         probe = @input.match pattern
@@ -256,7 +262,8 @@ exports.ReParse = class ReParse
     # `op` to the return of `method`.  If there are less that `min`
     # occurrences of `method`, `otherwise` is returned.  Used, for
     # example, to process a collection of mathematical productions of
-    # the same precedence.
+    # the same precedence.  This is analogous to the reduce() function
+    # of python, ruby, and ECMA5.
 
     chainl: (method, op, otherwise = null, min = null) =>
         found = 0
