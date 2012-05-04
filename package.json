@@ -1,5 +1,5 @@
 {
-    "name": "reparse-coffee",
+    "name": "reparse-coffeescript",
     "description": "An implementation of a parser combinator in coffeescript.",
     "author": { "name": "Elf M. Sternberg" },
     "version": "0.0.1",
@@ -15,9 +15,6 @@
     },
     "devDependencies": {
         "docco": "0.3.x"
-    },
-    "scripts": {
-        "pre-install": "mkdir -p lib && ./node_modules/.bin/coffee -o lib src/reparse.js"
     },
     "directories": {
         "lib": "./lib"
