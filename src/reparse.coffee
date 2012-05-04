@@ -61,6 +61,25 @@ exports.ReParse = class ReParse
             throw err if err isnt @fail
         throw new Error("Could not parse '" + @input + "'.")
 
+    # The core: Match a regular expression against the input,
+    # returning the first captured group.  If no group is captured,
+    # return the matched string.  This can result in surprises, if you
+    # don't wrap your groups exactly right, which is common in ()?
+    # regexps.  Note that this is where the input consumption happens:
+    # upon a match, the input is reduced to whatever did not match.
+    #
+    # Note that as the tree of productions is followed, backups of
+    # existing input are kept and restored when a possible parse
+    # fails.  If your source is very large, this can become
+    # problematic in both time and space.
+    #
+    # Note that the `return fail()` call eventually leads to a throw.
+
+    match: (pattern) =>
+        probe = @input.match pattern
+        return @fail()  unless probe
+        @input = @input.substr probe[0].length
+        if probe[1] is `undefined` then probe[0] else probe[1]
 
     # Attempts to apply the method and produce a value.  If it fails,
     # restores the input to the previous state.
@@ -99,23 +118,6 @@ exports.ReParse = class ReParse
         catch err
             throw err if err isnt @fail
         @fail input
-
-    # Match a regular expression against the input, returning the
-    # first captured group.  If no group is captured, return the
-    # matched string.  This can result in surprises, if you don't wrap
-    # your groups exactly right, which is common in ()? regexps.  Note
-    # that this is where the input consumption happens: upon a match,
-    # the input is reduced to whatever did not match.  (Note that as
-    # the tree of productions is followed, backups of existing input
-    # are kept and restored when a possible parse fails.  If your
-    # source is very large, this can become problematic in both time
-    # and space.)
-
-    match: (pattern) =>
-        probe = @input.match pattern
-        return @fail()  unless probe
-        @input = @input.substr probe[0].length
-        if probe[1] is `undefined` then probe[0] else probe[1]
 
     # Returns the first production among arguments for which the
     # production does not fail.
@@ -186,9 +188,10 @@ exports.ReParse = class ReParse
 
     many: (method, min = null) =>
         input = @input
-        result = until @eof()
+        result = []
+        until @eof()
             try
-                @maybe(method)
+                result.push @maybe method
             catch err
                 throw err if err isnt @fail
             break
