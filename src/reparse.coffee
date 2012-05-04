@@ -79,7 +79,7 @@ exports.ReParse = class ReParse
         probe = @input.match pattern
         return @fail()  unless probe
         @input = @input.substr (if probe[1]? and putback then probe[1].length else probe[0].length)
-        if probe[1]? then probe[1] else probe[0]
+        if probe[1] is `undefined` then probe[0] else probe[1]
 
     # Attempts to apply the method and produce a value.  If it fails,
     # restores the input to the previous state.
