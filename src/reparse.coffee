@@ -75,11 +75,11 @@ exports.ReParse = class ReParse
     #
     # Note that the `return fail()` call eventually leads to a throw.
 
-    match: (pattern) =>
+    match: (pattern, putback = false) =>
         probe = @input.match pattern
         return @fail()  unless probe
-        @input = @input.substr probe[0].length
-        if probe[1] is `undefined` then probe[0] else probe[1]
+        @input = @input.substr (if probe[1]? and putback then probe[1].length else probe[0].length)
+        if probe[1]? then probe[1] else probe[0]
 
     # Attempts to apply the method and produce a value.  If it fails,
     # restores the input to the previous state.
