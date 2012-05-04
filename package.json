@@ -15,8 +15,6 @@
     "directories": {
         "lib": "./lib"
     },
-    "main": {
-        "lib/reparse"
-    },
+    "main": "lib/reparse",
     "engine": "node >= 0.6.0"
 }
