@@ -44,7 +44,7 @@ exports.ReParse = class ReParse
     # Execute a production, which could be a function or a RegExp.
 
     produce: (method) =>
-        val = if (method instanceof RegExp) then @match(method) else method.call(this)
+        val = if (method instanceof RegExp) then @match(method) else method.call(@)
         @skipWS() if @ignorews
         val
 
