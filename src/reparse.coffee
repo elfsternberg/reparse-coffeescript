@@ -194,7 +194,7 @@ exports.ReParse = class ReParse
                 result.push @maybe method
             catch err
                 throw err if err isnt @fail
-            break
+                break
 
         if min and (result.length < min) then @fail input else result
 
