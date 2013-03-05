@@ -1,15 +1,15 @@
 {
     "name": "reparse-coffeescript",
     "description": "An implementation of a parser combinator in coffeescript.",
-    "author": { "name": "Elf M. Sternberg" },
+    "author": {
+        "name": "Elf M. Sternberg"
+    },
     "version": "0.0.1",
     "keywords": ["parser", "coffeescript"],
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "http://github.com/elfsternberg/reparse/raw/master/LICENSE"
-        }
-    ],
+    "licenses": [{
+        "type": "MIT",
+        "url": "http://github.com/elfsternberg/reparse/raw/master/LICENSE"
+    }],
     "dependencies": {
         "coffee-script": "1.x.x"
     },
