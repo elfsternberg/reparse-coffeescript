@@ -90,6 +90,8 @@ exports.ReParse = class ReParse
         @input = @input.substr (if probe[1]? and putback then probe[1].length else probe[0].length)
         if probe[1] is `undefined` then probe[0] else probe[1]
 
+    match: => @m.apply this, arguments
+
     # Attempts to apply the method and produce a value.  If it fails,
     # restores the input to the previous state.
 

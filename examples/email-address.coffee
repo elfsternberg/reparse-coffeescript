@@ -9,8 +9,8 @@ class EmailAddress extends ReParse
     bareAddress:  =>  @seq(@word, '@', @word).join ""
     phrase:       =>  @many @word
     word:         =>  @skip(/^\s+/).choice @quoted, @dottedAtom
-    quoted:       =>  @m /^"(?:\\.|[^"\r\n])+"/m
-    dottedAtom:   =>  @m /^[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+(?:\.[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+)*/m
+    quoted:       =>  @match /^"(?:\\.|[^"\r\n])+"/m
+    dottedAtom:   =>  @match /^[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+(?:\.[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+)*/m
 
     parse:        =>
         super
