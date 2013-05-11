@@ -44,7 +44,10 @@ exports.ReParse = class ReParse
     # Execute a production, which could be a function or a RegExp.
 
     produce: (method) =>
-        val = if (method instanceof RegExp) then @match(method) else method.call(@)
+        val = if ((method instanceof RegExp) or (typeof method == 'string'))
+            @m(method)
+        else
+            method.call(@)
         @skipWS() if @ignorews
         val
 
@@ -75,7 +78,13 @@ exports.ReParse = class ReParse
     #
     # Note that the `return fail()` call eventually leads to a throw.
 
-    match: (pattern, putback = false) =>
+    m: (pattern, putback = false) =>
+        if typeof pattern == 'string'
+            if @input.substr(0, pattern.length) == pattern
+                @input = @input.substr(pattern.length)
+                return pattern
+            return @fail()
+
         probe = @input.match pattern
         return @fail()  unless probe
         @input = @input.substr (if probe[1]? and putback then probe[1].length else probe[0].length)
@@ -181,7 +190,7 @@ exports.ReParse = class ReParse
     # will not skip carriage returns or linefeeds.
 
     skipWS: =>
-        @match(/^\s*/)
+        @m(/^\s*/)
         @
 
     # Returns an array of `min` values produced by `method`.
@@ -292,4 +301,3 @@ exports.ReParse = class ReParse
     # if there are zero productions.
 
     chainl1: (method, op) => @chainl method, op, null, 1
-

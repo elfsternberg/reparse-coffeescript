@@ -5,12 +5,12 @@ class EmailAddress extends ReParse
 
     addressList:  =>  @sepEndBy @address, /^\s*,\s*/
     address:      =>  @choice @namedAddress, @bareAddress
-    namedAddress: =>  @seq(@phrase, /^\s*</m, @bareAddress, /^>/)[2]
-    bareAddress:  =>  @seq(@word, /^@/, @word).join ""
+    namedAddress: =>  @seq(@phrase, /^\s*</m, @bareAddress, '>')[2]
+    bareAddress:  =>  @seq(@word, '@', @word).join ""
     phrase:       =>  @many @word
     word:         =>  @skip(/^\s+/).choice @quoted, @dottedAtom
-    quoted:       =>  @match /^"(?:\\.|[^"\r\n])+"/m
-    dottedAtom:   =>  @match /^[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+(?:\.[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+)*/m
+    quoted:       =>  @m /^"(?:\\.|[^"\r\n])+"/m
+    dottedAtom:   =>  @m /^[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+(?:\.[!#\$%&'\*\+\-\/\w=\?\^`\{\|\}~]+)*/m
 
     parse:        =>
         super

@@ -10,16 +10,16 @@ class ReJSON extends ReParse
     STRING = {"\"": 34, "\\": 92, "/": 47, 'b': 8, 'f': 12, 'n': 10, 'r': 13, 't': 9}
 
     value:    => @choice @literal, @string, @number, @array, @object
-    object:   => @between(/^\{/, /^\}/, @members).reduce ((obj, pair) => obj[pair[0]] = pair[2]; obj), {}
-    members:  => @sepBy @pair, /^,/
-    pair:     => @seq @string, /^:/, @value
-    array:    => @between /^\[/, /^\]/, @elements
+    object:   => @between('{', '}', @members).reduce ((obj, pair) => obj[pair[0]] = pair[2]; obj), {}
+    members:  => @sepBy @pair, ','
+    pair:     => @seq @string, ':', @value
+    array:    => @between '[', ']', @elements
     elements: => @sepBy @value, /^,/
-    literal:  => LITERAL[@match(/^(true|false|null)/)]
-    number:   => parseFloat @match(/^\-?\d+(?:\.\d+)?(?:[eE][\+\-]?\d+)?/)
+    literal:  => LITERAL[@m(/^(true|false|null)/)]
+    number:   => parseFloat @m(/^\-?\d+(?:\.\d+)?(?:[eE][\+\-]?\d+)?/)
 
     string: =>
-        chars = @match(/^"((?:\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}|[^"\\])*)"/)
+        chars = @m(/^"((?:\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}|[^"\\])*)"/)
         chars.replace /\\(["\\/bfnrt])|\\u([0-9a-fA-F]{4})/g, (_, $1, $2) =>
             String.fromCharCode (if $1 then STRING[$1] else parseInt($2, 16)) # "
 
@@ -48,4 +48,3 @@ jsonparse = new ReJSON()
 time "JSON", 1000, =>   JSON.parse input
 time "PEG.js", 1000, =>   peg.parse input
 time "ReParse", 1000, =>   jsonparse.parse(input)
-

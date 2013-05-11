@@ -13,10 +13,10 @@ class Calc extends ReParse
     expr:   => @chainl @term, @addop
     term:   => @chainl1 @factor, @mulop
     factor: => @choice @group, @number
-    group:  => @between /^\(/, /^\)/, @expr
-    number: => parseFloat @match(/^(\-?\d+(\.\d+)?)/)
-    mulop:  => @OPS[@match(/^[\*\/]/)]
-    addop:  => @OPS[@match(/^[\+\-]/)]
+    group:  => @between '(', ')', @expr
+    number: => parseFloat @m(/^(\-?\d+(\.\d+)?)/)
+    mulop:  => @OPS[@m(/^[\*\/]/)]
+    addop:  => @OPS[@m(/^[\+\-]/)]
 
     parse:  =>
         super
